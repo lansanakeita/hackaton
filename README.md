@@ -8,3 +8,6 @@
 
 # lancer le encore webpack
 `yarn encore dev-server`
+
+# Récupérer les dépendances 
+composer install
