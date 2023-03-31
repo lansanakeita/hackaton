@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement échoué{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="payment_failed">
+            <h1>Paiement échoué</h1>
+            <p>Malheureusement, votre paiement n'a pas pu être traité. Veuillez réessayer ou contacter notre support pour obtenir de l'aide.</p>
+        </div>
+
+        <a href="{{ path('app_home') }}" class="btn btn-primary">Retour à l'accueil</a>
+    </div>
+
+    {% block stylesheets %}
+        {{ parent() }}
+        <style>
+            .payment_failed{
+                padding: 50px 0;
+                background-color: #1b9448;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                color: white;
+            }
+            .payment_failed h1{
+                font-size: 40px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+            .payment_failed p{
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+
+            .container {
+                text-align: center;
+                padding: 50px 0;
+            }
+        </style>
+    {% endblock %}
+{% endblock %}

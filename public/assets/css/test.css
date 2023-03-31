@@ -1,0 +1,23 @@
+#div{
+    margin-left: 450px;
+}
+
+button.btn-delete, a.btn-edit {
+    padding: 7px;
+    border: none;
+    border-radius: 3px;
+}
+
+button.btn-delete {
+    background-color: #FD5959;
+}
+
+a.btn-edit {
+    background-color: #062E3C;
+}
+.tableau{
+    border: 1px solid black;
+    font-size: large;
+    margin: 70px;
+    padding: 70px;
+}

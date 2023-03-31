@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %} 
+
+{% block title %}Details{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="text-center">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        <h1>Détails de réservation</h1>
+        <table class="tableau">
+            <tr>
+                <td colspan="2">Client : {{app.user.firstName}} {{app.user.lastName}}</td>
+            </tr>
+            <tr>
+                <td colspan="2">Bailleur :  Brandon VOUVOU</td>
+            </tr>
+            <tr>
+                <td>Arrivée : {{booking.start|date("d/m/Y")}}</td>
+                <td>Départ : {{booking.end|date("d/m/Y")}} </td>
+            </tr>
+            <tr>
+                <td colspan="2">Créneaux : {{booking.slots}}</td>
+            </tr>
+        </table>
+
+         <hr>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre de jours</th>
+                    <th scope="col">Designation</th>
+                    <th scope="col">Prix Unitaire HT</th>
+                    <th scope="col">Total HT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ day }}</th>
+                    <td>{{ booking.office.title }}</td>
+                    <td>{{ (montant / (1 + (20 / 100))) | number_format(2) }}</td>
+                    <td>{{ ((montant / (1 + (20 / 100))) * day) | number_format(2) }} </td>
+                </tr>
+                <tr>
+                    <td colspan="3">Montant Total en TTC</th>
+                    <td> {{ montant * day }} €</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <form action="{{ path('app_download') }}"  method="POST">
+            <div class="text-center">
+                <a href="{{path('app_home')}}" class="btn btn-primary">Retour</a>
+                <button type="submit" class="btn btn-primary">Télécharger</button>
+            </div>
+        </form>
+        
+    </div>
+    
+{% endblock %}

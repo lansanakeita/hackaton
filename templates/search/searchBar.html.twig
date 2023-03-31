@@ -1,0 +1,32 @@
+{{ form_start(form,{ 'attr': {'class': 'form-inline d-flex flex-column'}}) }}
+    <div class="input-group" style="border-radius: 30px;padding: 0px 15px; box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px; align-items: center;">
+        
+            {{ form_row(form.query, { 'attr': {'id': 'Searchbar'}}) }}
+        
+        
+            <button class="btn bg-white" id="validate-form">
+                <i class="fa-sharp fa-solid fa-magnifying-glass" style="color: #ffde33"></i>
+            </button>
+        
+    </div>
+{{ form_end(form) }}
+
+<style>
+
+#form_query {
+    font-size: 16px;
+    border: none !important;
+    width: 270px !important;
+}
+
+#validate-form {
+    font-size: 2.5em;
+}
+.input-group .mb-3 {
+    margin-bottom: 0px !important;
+}
+.col .mb-3 {
+    margin-bottom: 0px !important;
+}
+
+</style>

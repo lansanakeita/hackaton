@@ -1,0 +1,94 @@
+{% extends "layoutDashboard.html.twig" %}
+
+{% block title %} Mon profil {% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column gap-5" style="margin-top: 60px;">
+    <div class="d-flex flex-column align-items-center">
+        <h1 class="mt-5 mb-5">Mes bureaux disponibles à la location</h1>
+        <a class="btn mt-3" id="title" href="{{ path('app_create_office_address') }}">
+            <i class="fa-regular fa-plus me-3"></i>
+            Proposer un bureau à la location
+        </a>
+    </div>
+
+    <div class="d-flex flex-row justify-content-center" id="card-row">
+        {% for office in offices %}
+        <div class="col-lg-3">
+            <a href="{{path('app_details_office' , {'id':office.id})}}" class="text-decoration-none">
+                <div class="card">
+                    <img src="/uploads/images/{{office.imageFilenames[0]}}" id="office-img" class="card-img-top"
+                        alt="annonce">
+                    <div class="d-flex flex-column justify-content-center">
+                        <p class="fs-4 text-center mt-3" style="color:#073a4b">{{office.title}}</p>
+                        <h5 class="ml-1 mr-1 mb-3 mt-2 text-center text-black-50">
+                            {{office.getLocation().getStreetName()}},
+                            {{office.getLocation().getZipCode()}} {{office.getLocation().getCity().getName()}}
+                        </h5>
+
+                        <h5 class="text-center text-black-50">Prix : {{office.price}} € / jour</h5>
+                    </div>
+
+                    <div class="text-center" id="links">
+                        <a href="{{ path('app_details_office' , {'id':office.id}) }}" class="text-black fs-5">
+                            Voir l'annonce
+                        </a>
+                    </div>
+                    <div class="row" style="margin-top: 25px;">
+                        <button class="col-lg-5" type="submit" id="edit" name="modify_office"
+                            style="padding-left: 10px;">
+                            <a href="{{ path('app_update_office_address' , {'id':office.id}) }}"
+                                class="btn-edit text-decoration-none fs-5">
+                                Modifier
+                            </a>
+                        </button>
+                        <div class="col-lg-2">
+                        </div>
+                        <button class="col-lg-5" type="submit" id="delete" name="delete_office"
+                            onclick="return confirm('Confirmez-vous la suppression')">
+                            <a href="{{ path('app_delete_office_address' , {'id':office.id}) }}"
+                                class="text-decoration-none fs-5">
+                                Supprimer
+                            </a>
+                        </button>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+<style>
+    #edit {
+        background-color: var(--blue);
+        color: white;
+        border-radius: 3px;
+        border: none;
+        font-size: 16px;
+        font-family: "Roboto";
+    }
+
+    #delete {
+        background-color: #FD5959;
+        color: white;
+        border-radius: 3px;
+        border: none;
+        padding: 7px;
+        font-size: 16px;
+        font-family: "Roboto";
+    }
+
+    #links {
+        margin-top: 25px;
+        justify-content: space-between;
+        text-decoration: underline;
+        margin-right: 15px;
+    }
+
+    #title {
+        color: black !important;
+    }
+</style>
+{% endblock %}

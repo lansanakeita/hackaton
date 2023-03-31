@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <h1>Détails de réservation</h1>
+    <table class="tableau">
+        <tr>
+            <td colspan="2" id="td">Client : {{app.user.firstName}} {{app.user.lastName}}</td>
+        </tr>
+        <tr>
+            <td colspan="2">Bailleur : Brandon VOUVOU</td>
+        </tr>
+        <tr id="dates">
+            <td id="td">Arrivée : {{booking.start|date("d/m/Y")}}</td>
+            <td id="td">Départ : {{booking.end|date("d/m/Y")}} </td>
+        </tr>
+        <tr>
+            <td colspan="2">Créneaux : {{booking.slots}}</td>
+        </tr>
+    </table>
+
+        <hr>
+    <table class="facture">
+        <thead>
+            <tr id="thead">
+                <td>Nombre de jours</td>
+                <td>Designation</td>
+                <td>Prix Unitaire HT</td>
+                <td id="total">Total HT</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{day}}</th>
+                <td>{{office.title}}</td>
+                <td> {{ (montant / (1 + (20 / 100))) | number_format(2) }} </td>
+                <td id="total"> {{ ((montant / (1 + (20 / 100))) * day) | number_format(2) }} </td>
+            </tr>
+            <tr>
+                <td colspan="3" id="total">Montant Total en TTC</th>
+                <td id="total">{{ montant * day }} €</td>
+            </tr>
+        </tbody>
+    </table>
+   
+    <style>
+        h1{
+            text-align:center;
+        }
+        #total{
+            font-size: large;
+            font-weight: bold; 
+        }
+        #td{
+            margin-right: 30px
+        }
+        .tableau{
+            border: 1px solid black;
+            font-size: large;
+            padding: 10px;
+        }
+        .facture {
+            width:80%;
+            margin:80px auto;
+            font-size: large;
+        }
+        .facture th, .facture td {
+            width:25%;
+        }
+    </style>
+</body>
+
+</html>
+        
+
+        
+

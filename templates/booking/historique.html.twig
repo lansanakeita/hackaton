@@ -1,0 +1,37 @@
+{% extends "layoutDashboard.html.twig" %}
+{% block title %}Historique{% endblock %}
+
+{% block content %}
+    <div class="container">
+        
+        <h1>Liste des réservations</h1>
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre de jours</th>
+                    <th scope="col">Designation</th>
+                    <th scope="col">Prix Unitaire HT</th>
+                    <th scope="col">Total HT</th>
+                    <th scope="col">Total TTC</th>
+                    <th scope="col">Download</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in app.user.bookings %}
+                    {% set intervale = date(booking.start).diff(date(booking.end)) %}
+                    {% set intervale = intervale.d +1 %}
+                    
+                    <tr>
+                        <td>{{intervale}}</th>
+                        <td>{{booking.office.title }}</td>
+                        <td>{{(booking.office.price / (1 + (20 / 100))) | number_format(2)}}</td>
+                        <td>{{intervale * (booking.office.price / (1 + (20 / 100))) | number_format(2)}}</td>
+                        <td>{{intervale * (booking.office.price ) | number_format(2)}}</td>
+                        <td><a class ="btn" href="{{path('app_detail_download' , {'id':booking.id})}}">PDF</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+# See the configuration reference at https://symfony.com/bundles/SchebTwoFactorBundle/6.x/configuration.html
+scheb_two_factor:
+    security_tokens:
+       # - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+        - Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken
+
+    email:
+        digits: 6                      # Number of digits in authentication code
+        enabled: true                  # If email authentication should be enabled, default false
+        #mailer: acme.custom_mailer_service  # Use alternative service to send the authentication code
+        #code_generator: acme.custom_code_generator_service  # Use alternative service to generate authentication code
+        sender_email: no-reply@test.com   # Sender email address
+
+    trusted_device:
+        enabled: true                  # If device authentication should be enabled, default false
+        lifetime: 86400                 # Lifetime of the device authentication code
+        extend_lifetime: false           # If device authentication code should be extended, default false
+        cookie_name: trusted_device   # Cookie name to store the device authentication code
+        cookie_secure: false           # If cookie should be secure, default false
+        cookie_same_site: "lax"
+        cookie_path: "/"
+

@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Around the corner, la solution à votre travail à distance{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="text-center">
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    <h1 style="margin-top: 70px;">Trouvez votre bureau de télétravail</h1>
+    <p style="margin-top: 30px;">Conciliez itinérance, télétravail et sociabilisation !</p>
+
+    <div class="row">
+        <div class="col-lg-4">
+
+        </div>
+
+        {# {% if is_granted('ROLE_RENTER') %}
+            <div class="col-lg-2">
+                <button class="btn btn-lg mb-3" id="bureau" style="margin-top: 30px;">
+                    <a href=""> Réservez un bureau </a>
+                </button>
+            </div> #}
+
+        {% if is_granted('ROLE_OWNER') %}
+            <div class="d-flex justify-content-center" style="cursor: pointer">
+                <a href="{{ path('app_create_office_address') }}"
+                    class="d-flex gap-2 align-baseline text-decoration-none p-4 rounded-1 fs-3 text-white mt-5"
+                    style="background-color: #073A4B">
+                    <div>Proposez un bureau</div>
+                    <div>
+                        <i class="fa-solid fa-map"></i>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    <div class="row" id="card-row">
+        {% for office in offices %}
+        <div class="col-lg-3" id="card-col">
+            <a href="{{path('app_details_office' , {'id':office.id})}}" id="office-card">
+                <div class="card">
+                    <img src="/uploads/images/{{office.imageFilenames[0]}}" id="office-img" class="card-img-top"
+                        alt="{{ office.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{office.title}}</h5>
+                        <p class="card-text">{{office.description}}</p>
+                        <h5 class="card-price"><strong>{{office.price}} € par jour</strong></h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+
+    </div>
+
+
+    <div class="d-flex justify-content-center" style="cursor: pointer">
+        <a href="{{ path('app_home_map') }}"
+            class="d-flex gap-2 align-baseline text-decoration-none p-4 rounded-1 fs-3 text-white mt-5"
+            style="background-color: #073A4B">
+            <div>Afficher la carte</div>
+            <div>
+                <i class="fa-solid fa-map"></i>
+            </div>
+        </a>
+    </div>
+</div>
+<style>
+    p {
+        color: #073a4b;
+        text-align: center;
+        font-family: "DM Sans";
+        font-weight: 18px;
+    }
+
+    #bureau {
+        background-color: #073a4b;
+    }
+</style>
+{% endblock %}

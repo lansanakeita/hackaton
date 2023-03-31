@@ -1,0 +1,156 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Details {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+          integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 80px;">
+    <a class="nav-link" href="/" style="color: #073a4b;"> <i class="fa-solid fa-arrow-left me-3"></i>
+        Retour aux annonces</a>
+    <div class="container" style="margin-top: 50px;">
+        <div class="text-center">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-danger">
+                    <h5>{{ message }}</h5>
+                </div>
+            {% endfor %}
+        </div>
+        <div>
+            <h1>{{office.title}}</h1>
+        </div>
+        <div class="d-flex gap-2" style="margin-top: 60px;">
+            <div><img src="/uploads/images/{{office.imageFilenames[0]}}" class="d-block object-fit-cover"
+                    style="height: 500px;width: 40vw;" alt="..."></div>
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" style="width: 100%">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 0"></button>
+                    {% if office.imageFilenames|length > 2 %}
+                    {% for i in 1..office.imageFilenames|length - 2 %}
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{i}}"
+                        aria-label="Slide {{i}}"></button>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="carousel-inner">
+                    {% if office.imageFilenames|length >= 2 %}
+                    <div class="carousel-item active">
+                        <img src="/uploads/images/{{office.imageFilenames[1]}}" class="d-block w-100 object-fit-cover"
+                            style="height: 500px;" alt="...">
+                    </div>
+                    {% endif %}
+                    {% if office.imageFilenames|length >= 3 %}
+                    {% for i in 2..office.imageFilenames|length - 1 %}
+                    <div class="carousel-item">
+                        <img src="/uploads/images/{{office.imageFilenames[i]}}" class="d-block w-100 object-fit-cover"
+                            style="height: 500px;" alt="...">
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+
+            </div>
+        </div>
+
+        <h2>{{office.location.city}}</h2>
+
+        <p>{{office.description}}
+        <p>
+
+
+        <div class="d-flex gap-2 justify-content-around" style="margin-top: 60px;">
+            <div style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;padding: 40px">
+                <h2>Caractéristiques :</h2>
+                <p>Taille de la pièce : {{office.roomSize}} m²</p>
+                <p>Taille du bureau : {{office.deskSize}} m²</p>
+                {% if office.canLeaveBelongings %}
+                <p>Possibilité de laisser les affaires : Oui</p>
+                {% else %}
+                <p>Possibilité de laisser les affaires : Non</p>
+                {% endif %}
+                <p>Luminosité : {{office.brightness}}</p>
+                <p>Qualité de l'internet : {{office.networkQuality}}</p>
+                <p>Capacité : {{office.capacity}} personne(s)</p>
+                <p>Type d'internet : {{office.internetType}}</p>
+            </div>
+            <div class="d-flex flex-column gap-2 justify-content-around align-items-center"
+                style=" box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;padding: 40px">
+                <h2 style="text-align: center;">{{office.price}} € HT / jour</h2>
+               
+                    <div>
+                        {{ form_start(form,{ 'attr': {'class': 'd-flex flex-column'} }) }}
+                            <div class="d-flex gap-4 justify-content-between">
+                                {{ form_row(form.start, {label: 'Arrivée'}) }}
+                                {{ form_row(form.end, {label: 'Départ'}) }}
+                            </div>
+                            {{ form_row(form.slots, {label: 'Créneau'}) }}
+
+                            <button type="submit" class="btn btn-primary align-self-center"
+                                style="margin-top: 40px;">Valider
+                            </button>
+                        {{ form_end(form) }}
+                    </div>
+              
+                
+            </div>
+        </div>
+
+        <h2 style="margin-top: 60px;" >Localisation </h2>
+        <div id="map" style="width: 100%; height: 600px; background-color: #0f6674"></div>
+
+        {% block javascripts %}
+            {{ parent() }}
+            <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+                    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+            <script defer>
+                "use strict";
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Initialisation de la carte
+                    const map = L.map('map').setView([46.2276, 2.2137], 6); // Coordonnées de la France par défaut
+                    // Ajout du fond de carte OpenStreetMap
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                        maxZoom: 18
+                    }).addTo(map);
+
+                    // Ajout des bureaux sur la carte
+                    const coordinates = {{ coordinates| json_encode | raw
+                    }};
+
+                    const marker = L.marker([coordinates.latitude, coordinates.longitude]).addTo(map);
+                });
+            </script>
+        {% endblock %}
+
+    </div>
+    <style>
+        h1 {
+            text-align: left;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-family: "DM sans", sans-serif;
+            color: black;
+            font-weight: 600;
+        }
+    </style>
+    {% endblock %}

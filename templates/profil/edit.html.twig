@@ -1,0 +1,67 @@
+{% extends 'layoutforms.html.twig' %}
+
+{% block title %}Modification Profile{% endblock %}
+
+{% block content %}
+
+<h1 class="mt-4" style="text-align: center;">Formulaire de modification du Profil</h1>
+
+<div class="container" id="saisie-objectif"
+    style="padding-top: 30px; padding-bottom: 30px; padding-left: 0px; padding-right: 0px; margin-top: 60px; margin-left: 300px; max-width: 50%;">
+
+    <div class="row" style="max-width: 100%;">
+        <fieldset class="form-profile" style="border-color: orange; padding-left: 50px;">
+            <div class="" style="justify-content: center;">
+                {{ form_start(form) }}
+                <div id="padding" style="padding-left: 100px;">
+                    <div class="col-lg-8 col-sm-9">
+                        {{ form_widget(form) }}
+                    </div>
+                    <div class="row mt-4" id="btn-form" style="padding-left: 80px;">
+                        <div class="col-2">
+                            <a class="btn" href="{{ path('app_profil') }}" style="margin-right: 15px;">Retour</a>
+                        </div>
+
+                        <div class="col-2">
+                            <button class="btn btn-primary" id="validate-form">{{ button_label|default('Valider')
+                                }}</button>
+                        </div>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+        </fieldset>
+    </div>
+
+</div>
+
+{% block style%}
+<style>
+    @media screen and (max-width : 640px) {
+
+        #btn-form {
+            padding-left: 60px !important;
+        }
+
+        .form-profile {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+        .container {
+            margin-left: 0px !important;
+            max-width: 100% !important;
+        }
+
+        #padding {
+            padding-left: 0px !important;
+        }
+
+        .col-4 {
+            padding-left: 25px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% endblock %}

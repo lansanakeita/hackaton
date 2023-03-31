@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <h1>Détails de réservation</h1>
+    <table class="tableau">
+        <tr>
+            <td colspan="2" id="td">Client : {{app.user.firstName}} {{app.user.lastName}}</td>
+        </tr>
+        <tr>
+            <td colspan="2" id="td">Bailleur : {{details.office.owner.firstName}} {{details.office.owner.lastName}}</td>
+        </tr>
+        <tr id="dates">
+            <td id="td">Arrivée : {{details.start|date("d/m/Y")}}</td>
+            <td id="td">Départ : {{details.end|date("d/m/Y")}} </td>
+        </tr>
+        <tr>
+            <td colspan="2">Créneaux : {{details.slots}}</td>
+        </tr>
+    </table>
+
+        <hr>
+    <table class="facture">
+        <thead>
+            <tr id="thead">
+                <td>Nombre de jours</td>
+                <td>Designation</td>
+                <td>Prix Unitaire HT</td>
+                <td id="total">Total HT</td>
+                <td id="total">TVA </td>
+            </tr>
+        </thead>
+        <tbody>
+            {% set intervale = date(details.start).diff(date(details.end)) %}
+            {% set intervale = intervale.d +1 %}
+            <tr>
+                <td>{{intervale}}</th>
+                <td>{{details.office.title}}</td>
+                <td>{{(details.office.price / (1 + (20 / 100))) | number_format(2)}}</td>
+                <td>{{intervale * (details.office.price / (1 + (20 / 100))) | number_format(2)}}</td>
+               <td>20%</th>
+            </tr>
+            <tr>
+                <td colspan="3" id="total">Montant Total en TTC</th>
+                <td id="total">{{ details.office.price * intervale }} €</td>
+            </tr>
+        </tbody>
+    </table>
+   
+    <style>
+        h1{
+            text-align:center;
+        }
+        #total{
+            font-size: large;
+            font-weight: bold; 
+        }
+        #td{
+            margin-right: 30px
+        }
+        .tableau{
+            border: 1px solid black;
+            font-size: large;
+            padding: 10px;
+        }
+        .facture {
+            width:80%;
+            margin:80px auto;
+            font-size: large;
+        }
+        .facture th, .facture td {
+            width:25%;
+        }
+    </style>
+</body>
+
+</html>
+        
+
+        
+

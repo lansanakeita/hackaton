@@ -1,0 +1,189 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Around the corner, la solution à votre travail à distance{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="text-center">
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    <h1 style="margin-top: 70px;">Trouvez votre bureau de télétravail</h1>
+    <p style="margin-top: 30px;">Conciliez itinérance, télétravail et sociabilisation !</p>
+
+    <div class="row">
+        <div class="col-lg-4">
+
+        </div>
+            {% if is_granted('ROLE_RENTER') %}
+                <div class="col-lg-2">
+                    <button class="btn btn-lg mb-3" id="bureau" style="margin-top: 30px;">
+                        <a href=""> Réservez un bureau </a>
+                    </button>
+                </div>
+
+            {% elseif is_granted('ROLE_OWNER') %}
+                <div class="col-lg-3">
+                    <button class="btn btn-lg mb-3" id="bureau" style="margin-top: 30px;">
+                        <a href="{{path('app_create_office_address')}}"> Proposez un bureau </a>
+                    </button>
+                </div>
+            {% endif %}
+
+
+    </div>
+
+    <h1 style="margin-top: 80px;margin-bottom: 30px;">Carte des bureaux</h1>
+    <div id="map" style="width: 100%; height: 600px; background-color: #0f6674"></div>
+
+
+    <div class="d-flex justify-content-center" style="cursor: pointer">
+        <a href="{{ path('app_home') }}"
+            class="d-flex gap-2 align-baseline text-decoration-none p-4 rounded-1 fs-3 text-white mt-5"
+            style="background-color: #073A4B">
+            <div>Afficher la liste</div>
+            <div>
+                <i class="fa-solid fa-list"></i>
+            </div>
+        </a>
+    </div>
+</div>
+<style>
+    p {
+        color: #073a4b;
+        text-align: center;
+        font-family: "DM Sans";
+        font-weight: 18px;
+    }
+
+    #bureau {
+        background-color: #073a4b;
+    }
+
+    .price-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #FF5A5F;
+        color: #FFFFFF;
+        font-size: 14px;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+        padding: 4px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .office-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .card-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .image-wrapper {
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+    }
+
+    .image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .info-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: 20px;
+    }
+
+    .address,
+    .card-price {
+        text-align: center;
+    }
+
+    .address {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .card-price,
+    .info-wrapper {
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+<script defer>
+    "use strict";
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialisation de la carte
+        const map = L.map('map').setView([46.2276, 2.2137], 6); // Coordonnées de la France par défaut
+        // Ajout du fond de carte OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 18
+        }).addTo(map);
+
+        // Ajout des bureaux sur la carte
+        const offices = {{ offices| json_encode | raw
+    }};
+    console.log(offices);
+
+    offices.forEach(function (office) {
+        // Définition de l'icône du marqueur
+        const priceIcon = L.divIcon({
+            className: 'price-icon',
+            html: office.price + ' €',
+            iconSize: [60, 30],
+            iconAnchor: [30, 15]
+        });
+        // Création du marqueur pour chaque bureau
+        const marker = L.marker([office.latitude, office.longitude], { icon: priceIcon }).addTo(map);
+
+        // Ajout d'une popup affichant des informations en HTML
+        const popupContent = `
+                  <a href="/details-office/${office.id}" class="office-card" target="_blank">
+                    <div class="card-wrapper">
+                      <div class="image-wrapper">
+                        <img src="/uploads/images/${office.cover}" alt="${office.title}">
+                      </div>
+                      <div class="info-wrapper">
+                        <div class="address">${office.city}, ${office.country}</div>
+                        <div class="card-price"><strong>${office.price} €</strong> par jour</div>
+                      </div>
+                    </div>
+                  </a>
+                `;
+
+        // Ajout d'une popup affichant le prix du bureau
+        marker.bindPopup(popupContent);
+    });
+        });
+</script>
+{% endblock %}

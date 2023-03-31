@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement réussi{% endblock %}
+
+{% block content %}
+    <div class="container d-flex flex-column gap-5">
+        <div class="payment_success">
+            <h1>Paiement réussi</h1>
+            <p>Merci pour votre achat ! Votre paiement a été effectué avec succès.</p>
+        </div>
+
+        <div>
+            <a href="{{ path('app_home') }}" class="p-4 fs-3 text-decoration-none mt-4 text-white"
+               style="background-color: #073A4B">
+                Retour à l'accueil
+            </a>
+        </div>
+    </div>
+
+    {% block stylesheets %}
+        {{ parent() }}
+        <style>
+            .payment_success{
+                padding: 50px 0;
+                background-color: #1FA055;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                color: white;
+            }
+            .payment_success h1{
+                font-size: 40px;
+                font-weight: bold;
+                margin-bottom: 20px;
+                color: white;
+            }
+            .payment_success p{
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+            .container {
+                text-align: center;
+                padding: 50px 0;
+            }
+        </style>
+    {% endblock %}
+{% endblock %}

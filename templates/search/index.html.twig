@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SearchController!{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Résultat de recherche</h1>
+
+    {% if app.request.method == 'POST' %}
+        <div>
+            {% if offices | length == 0 %}
+                <h4>Aucun résulat pour votre recherche.</h4>
+            {% else %}
+                <div class="row" id="card-row">
+                {% for office in offices %}
+                    <div class="col-lg-3" id="card-col">
+                        <a href="{{path('app_details_office' , {'id':office.id})}}" id="office-card">
+                            <div class="card">
+                                <img src="/uploads/images/{{office.imageFilenames[0]}}" id="office-img" class="card-img-top"
+                                    alt="{{ office.title }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{office.title}}</h5>
+                                    <p class="card-text">{{office.description}}</p>
+                                    <h5 class="card-price"><strong>{{office.price}} € par jour</strong></h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+
+        </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

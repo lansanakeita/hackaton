@@ -1,0 +1,134 @@
+{% extends 'layoutDashboard.html.twig' %}
+
+{% block title %}Modifier votre annonce{% endblock %}
+
+{% block content %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('assets/css/select2/select2.min.css') }}">
+{% endblock %}
+
+<div class="container" style="margin-top: 60px;">
+    <a class="nav-link" href="{{ path('app_owner_profile') }}" style="color: #073a4b;"> <i
+            class="fa-solid fa-arrow-left me-3"></i>
+        Retour</a>
+    <h1 class="mt-5 mb-5">Modifier l'annonce</h1>
+    <h2>1. Le bureau</h2>
+    <div class="d-flex flex-column">
+        {{ form_start(formOfficeAddress,{ 'attr': {'class': 'd-flex flex-column'}}) }}
+        <div style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;border-radius: 3px;">
+            <div style="padding: 80px;">
+                <h3 class="mb-4 mt-4">Adresse</h3>
+                <div class="form-group col-md-3">
+                    {{ form_row(formOfficeAddress.address.streetName, {label: 'Rue'}) }}
+                </div>
+                <div class="form-row d-flex flex-wrap gap-5">
+                    <div class="form-group col-md-3">
+                        {{ form_row(formOfficeAddress.address.zipCode, {label: 'Code postal'}) }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        {{ form_row(formOfficeAddress.address.city, {label: 'Ville'}) }}
+                    </div>
+                </div>
+                <h3 class="mb-4 mt-4">Caractéristiques</h3>
+                <div class="form-row d-flex flex-wrap gap-5">
+                    <div class="form-group col-md-3">
+                        {{ form_row(formOfficeAddress.office.roomSize, {label: 'Taille de la pièce'}) }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        {{ form_row(formOfficeAddress.office.deskSize, {label: 'Taille du bureau'}) }}
+                    </div>
+                </div>
+                <div class="form-row d-flex flex-wrap gap-5">
+                    <div class="form-group col-md-3">
+                        {{ form_row(formOfficeAddress.office.equipments, {label: 'Équipements'}) }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        {{ form_row(formOfficeAddress.office.kitchens, {label: 'Équipements cuisine'}) }}
+                    </div>
+                </div>
+                <div class="form-row d-flex flex-wrap gap-5">
+                    <div class="form-group col-md-3">
+                        {{ form_row(formOfficeAddress.office.networkQuality, {label: 'Qualité du réseau'}) }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        {{ form_row(formOfficeAddress.office.internetType, {label: 'Type d\'internet'}) }}
+                    </div>
+                </div>
+                <div class="form-row d-flex flex-wrap gap-5">
+                    <div class="form-group col-md-3">
+                        {{ form_row(formOfficeAddress.office.capacity, {label: 'Capacité du bureau'}) }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        {{ form_row(formOfficeAddress.office.brightness, {label: 'Luminosité'}) }}
+                    </div>
+                </div>
+                <div class="form-group col-md-5" style="margin-top: 20px;">
+                    {{ form_row(formOfficeAddress.office.canLeaveBelongings, {label: 'Possibilité de laisser les
+                    affaires
+                    sur
+                    place'}) }}
+                </div>
+                <div class="form-group col-md-3">
+                    {{ form_row(formOfficeAddress.office.images, {label: 'Photos du bureau'}) }}
+                </div>
+            </div>
+        </div>
+        <h2>2. L'annonce</h2>
+        <div class="d-flex flex-column align-items-center"
+            style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;border-radius: 3px;padding: 30px;">
+            <div class="form-group col-md-3">
+                {{ form_row(formOfficeAddress.office.title, {label: 'Titre de l\'annonce'}) }}
+            </div>
+            <div class="form-group col-md-3">
+                {{ form_row(formOfficeAddress.office.description, {label: 'Description'}) }}
+            </div>
+            <div class="form-group col-md-3">
+                {{ form_row(formOfficeAddress.office.price, {label: 'Prix de location par jour'}) }}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary align-self-center mt-5 mb-5">Enregistrer</button>
+        {{ form_end(formOfficeAddress) }}
+    </div>
+</div>
+<style>
+    h2 {
+        font-size: 20px;
+        font-family: "DM sans", sans-serif;
+        color: #073a4b;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    h3 {
+        font-size: 18px;
+
+    }
+
+    input,
+    select {
+        width: 100% !important;
+        ;
+    }
+
+    input[type="checkbox"] {
+        width: 15px !important;
+        height: 15px;
+    }
+
+    #updated_office_address_office_images {
+        width: 300px !important;
+    }
+
+    .form-check label {
+        margin-top: 0 !important;
+        margin-left: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('assets/scripts/select2/select2.min.js') }}"></script>
+<script src="{{ asset('assets/scripts/select.js') }}"></script>
+{% endblock %}
